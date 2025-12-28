@@ -4,12 +4,16 @@ import { Job } from "../models/job";
 import { stylesApp } from "../styles/style";
 import { MaterialIcons } from '@expo/vector-icons';
 
+//sử dụng redux
+import { useDispatch } from "react-redux";
+import { removeTask } from "../features/todo/homeSlice";
 type PlatListProps = {
     data: Job[];
-    setData?: React.Dispatch<React.SetStateAction<Job[]>>;
 };
 
 export default function FlatListComponent(props: PlatListProps) {
+    const dispatch = useDispatch();
+
     function ItemJob(item: Job): void {
         alert('Item Job title : ' + item.title + ' date : ' + item.date);
     }
@@ -19,10 +23,7 @@ export default function FlatListComponent(props: PlatListProps) {
             { text: 'Cancel', style: 'cancel' },
             {
                 text: 'OK', onPress: () => {
-                    if (props.setData) {
-                        const newJobs = Jobs.filter(job => job.id !== item.id);
-                        props.setData(newJobs);
-                    }
+                    dispatch(removeTask(item));
                 }
             },
         ]);
